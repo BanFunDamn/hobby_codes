@@ -1,4 +1,5 @@
 #! /usr/bin/env python3
+
 import os, time
 
 def encryption(s, num):

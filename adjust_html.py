@@ -1,3 +1,5 @@
+#! /usr/bin/env python3
+
 def clean_spaces(text): # 文字列先頭に並ぶ半角スペースを除外
   tmp_text = text
   while(True):
