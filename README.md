@@ -14,3 +14,17 @@
 ## BrowserBookmark
 - This program creates a file that contains the list of bookmark, but the words got encrypted (in very easy way) so other people can't see what page you got saved.
 - Don't you sometimes wanna hide even the name of the web site from others? (e.g. Online store for adult things)<br>This is to save but hide those bookmarks! (Don't feel whenever be safe! Others can easily see when you opened the page in brower! <- Nobody should misunderstand this but I just wanted to make sure)
+
+## PasswordMaker
+* This program will automatically create an password.
+* There are options like below:
+  * Length of password
+  * Style of password could be chosen from below:
+    1. Only Numbers
+    2. Numbers and Alphabets (Lowercases)
+    3. Numbers and Alphabets (both Upper and Lower)
+    4. Numbers, Alphabets, and Symbol
+* By this program, you could only use period for symbol now.
+  - I will add more symbol if necessary.
+
+
