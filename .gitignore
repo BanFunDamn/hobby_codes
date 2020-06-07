@@ -2,7 +2,6 @@ databank
 
 # related to git
 .git*
-.gitignore
 
 # outputs of test dir
 test/*
