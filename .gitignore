@@ -1,1 +1,7 @@
 databank
+
+# outputs of test dir
+test/*
+
+# should be removed
+__pycache__

@@ -42,13 +42,13 @@ def parse_html(writing_file, url, indent, point): # htmlデータのインデン
     tag, word = pop_tag(content)
     check = adjust_indent(tag)
     if check != 1:
-      writing_file.write(f"{' ' * (indent + check) * point}{tag}")
+      writing_file.write(f"{' ' * (indent + check) * point}{tag}\n")
     else:
-      writing_file.write(f"{' ' * indent * point}{tag}")
+      writing_file.write(f"{' ' * indent * point}{tag}\n")
     return parse_html(writing_file, word, indent + check, point)
   else:
     tag, word = pop_word(content)
-    writing_file.write(f"{' ' * indent * point}{word}")
+    writing_file.write(f"{' ' * indent * point}{word}\n")
     return parse_html(writing_file, tag, indent, point)
 
 def main(url, filename):
