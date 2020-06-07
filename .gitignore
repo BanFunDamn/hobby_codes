@@ -1,7 +1,11 @@
 databank
 
+# related to git
+.git*
+
 # outputs of test dir
 test/*
 
 # should be removed
 __pycache__
+.DS_Store
