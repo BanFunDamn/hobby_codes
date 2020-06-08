@@ -13,7 +13,7 @@
 
 ## BrowserBookmark
 - This program creates a file that contains the list of bookmark, but the words got encrypted (in very easy way) so other people can't see what page you got saved.
-- Don't you sometimes wanna hide even the name of the web site from others? (e.g. Online store for adult things)<br>This is to save but hide those bookmarks! (Don't feel whenever be safe! Others can easily see when you opened the page in brower! <- Nobody should misunderstand this but I just wanted to make sure)
+- Don't you sometimes wanna hide even the name of bookmarks from others?<br>This is to save but hide those bookmarks! (Don't feel whenever be safe! Others can easily see when you opened the page in brower! <- Nobody should misunderstand this but I just wanted to make sure)
 
 ## PasswordMaker
 * This program will automatically create an password.
