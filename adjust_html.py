@@ -12,16 +12,24 @@ def clean_spaces(text): # 文字列先頭に並ぶ半角スペースを除外
 
 def pop_word(text): # htmlデータの文字とタグを分離（先頭がタグでない場合有効）
   tmp_text = text
-  border = tmp_text.index("<")
-  tmp_word = tmp_text[:border]
-  tmp_tag = tmp_text[border:]
+  try:
+    border = tmp_text.index("<")
+    tmp_word = tmp_text[:border]
+    tmp_tag = tmp_text[border:]
+  except:
+    tmp_word = tmp_text
+    tmp_tag = ""
   return tmp_tag, tmp_word
 
 def pop_tag(text): # htmlデータの先頭のタグとそれ以降を分離（先頭がタグの場合有効）
   tmp_text = text
-  border = tmp_text.index(">")
-  tmp_tag = tmp_text[:border + 1]
-  tmp_word = tmp_text[border + 1:]
+  try:
+    border = tmp_text.index(">")
+    tmp_tag = tmp_text[:border + 1]
+    tmp_word = tmp_text[border + 1:]
+  except:
+    tmp_tag = tmp_text
+    tmp_word = ""
   return tmp_tag, tmp_word
 
 def adjust_indent(tag): # タグによるインデント調整
@@ -33,8 +41,9 @@ def adjust_indent(tag): # タグによるインデント調整
     return 0
   if tag[1] == "!": # 特殊タグの場合（例：<!DOCTYPE ~~>）
     return 0
-  else:
-    return 1
+  if tag[1:5] in ["link", "meta"] or tag[1:4] in ["img"]: # link、meta、imgタグの場合
+    return 0
+  return 1
 
 def parse_html(writing_file, url, indent, point): # htmlデータのインデントを整える
   content = clean_spaces(url)
