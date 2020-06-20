@@ -57,6 +57,5 @@ def get_updated_pages(url, date):
         updated_page_list += [f"{name} [{link}]"]
   for page in updated_page_list:
     print(page)
-  print("Finished")
 
-get_updated_pages(url, "06/20")
+get_updated_pages(url, get_date())
