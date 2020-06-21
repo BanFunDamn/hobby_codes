@@ -1,7 +1,7 @@
 #! /usr/bin/env python3
 
 import adjust_html
-import datetime
+import datetime, os
 
 def get_date():
   tmp_date = datetime.datetime.now()
@@ -57,5 +57,6 @@ def get_updated_pages(url, date):
         updated_page_list += [f"{name} [{link}]"]
   for page in updated_page_list:
     print(page)
+  os.remove("test/tmp.html")
 
 get_updated_pages(url, get_date())
