@@ -35,7 +35,7 @@ def parse_image_tag(text):
   return src, title
 
 def get_updated_pages(url, date):
-  # adjust_html.main(url, "test/tmp.html")
+  adjust_html.main(url, "test/tmp.html")
   content = []
   with open("test/tmp.html") as rf:
     content = rf.read().split("\n")
