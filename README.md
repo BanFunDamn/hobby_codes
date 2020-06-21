@@ -17,7 +17,8 @@
 
 ## CheckComicUpdate
 - This program checkes the updates of niconico manga web site.
-- For now, it only shows which site got updates, but I am trying to announce which exact manga is updated.
+- It collects only the manga whose episode has been updated today, and it put all links into html.
+- Finally this automatically opens Google Chrome to show the created html file, so make sure that Google Chrome has been installed or change the application.
 
 ## PasswordMaker
 - This program will automatically create an password.
