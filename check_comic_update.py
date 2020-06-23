@@ -29,10 +29,21 @@ def parse_image_tag(text):
     tmp = tmp.replace("\"", "")
   if "\'" in tmp:
     tmp = tmp.replace("\'", "")
-  alt, src, title = tmp.split(" ")
-  if "alt=" in alt[:4] and "src=" in src[:4] and "title=" in title[:6]:
-    src = src[4:]
-    title = title[6:]
+  # alt, src, title = tmp.split(" ")
+  # if "alt=" in alt[:4] and "src=" in src[:4] and "title=" in title[:6]:
+  #   src = src[4:]
+  #   title = title[6:]
+  tmp_datas = tmp.split(" ")
+  alt = ""
+  src = ""
+  title = ""
+  for td in tmp_datas:
+    if "alt=" in td[:4]:
+      alt = td[4:]
+    if "src=" in td[:4]:
+      src = td[4:]
+    if "title=" in td[:6]:
+      title = td[6:]
   return src, title
 
 def parse_href_tag(text):
