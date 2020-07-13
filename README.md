@@ -11,6 +11,10 @@
 - By giving an URL of news site to this program, you could get notifications if there are new informations in that site.
 - But the function is adjusted for each site, so this is still not convenience so much...
 
+## AutoOpenMangaSite
+- This program is made to open only the manga site which will be or already updated on that day.
+- Adding site is super easy, you only have to add the {url, update_rule} dictionary data to the program!
+
 ## BrowserBookmark
 - This program creates a file that contains the list of bookmark, but the words got encrypted (in very easy way) so other people can't see what page you got saved.
 - Don't you sometimes wanna hide even the name of bookmarks from others?<br>This is to save but hide those bookmarks! (Don't feel whenever be safe! Others can easily see when you opened the page in brower! <- Nobody should misunderstand this but I just wanted to make sure)
