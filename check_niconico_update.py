@@ -146,7 +146,10 @@ def create_database_html(dic_of_url, file_name):
       wf.write(line + "\n")
 
 if __name__ == "__main__":
-  link_list = get_updated_pages(url_head + url_body, get_date())
+  while(True):
+    link_list = get_updated_pages(url_head + url_body, get_date())
+    if link_list != {}:
+      break
   for key in link_list.keys():
     link_list[key] = url_head + link_list[key]
   check_list = []
