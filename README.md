@@ -14,6 +14,7 @@
 ## AutoOpenMangaSite
 - This program is made to open only the manga site which will be or already updated on that day.
 - Adding site is super easy, you only have to add the {url, update_rule} dictionary data to the program!
+  - Well, please be sure that I am only putting the naming rules which I need. (For now, Everyday, Workday, Monday to Sunday, and 5th or 10th dates are allowed)
 
 ## BrowserBookmark
 - This program creates a file that contains the list of bookmark, but the words got encrypted (in very easy way) so other people can't see what page you got saved.

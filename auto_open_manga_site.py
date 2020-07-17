@@ -3,10 +3,10 @@ import datetime, os
 site_list = {# URL in key, moment in value
              # write several moments dividing by comma
              "https://comic-walker.com/":"Everyday",
-             "https://web-ace.jp/youngaceup/contents/":"Everyday",
-             "https://www.alphapolis.co.jp/manga/official":"Everyday",
-             "https://comic-boost.com/series?action=index&controller=gentosha%2Fseries&new_series=true&per=60":"Everyday",
-             "https://futabanet.jp/list/monster/serial":"Everyday",
+             "https://web-ace.jp/youngaceup/contents/":"Workday",
+             "https://www.alphapolis.co.jp/manga/official":"Workday",
+             "https://comic-boost.com/series?action=index&controller=gentosha%2Fseries&new_series=true&per=60":"Workday",
+             "https://futabanet.jp/list/monster/serial":"Workday",
              "https://www.ganganonline.com/contents/":"Monday,Thursday",
              "https://www.comic-earthstar.jp/":"Thursday",
              "http://comicride.jp/":"Thursday",
@@ -23,12 +23,20 @@ app = "Brave Browser"
 def update_today(keyword): # check the keyword type
   if keyword == "Everyday":
     return True
+  if keyword == "Workday":
+    return update_workday()
   elif "day" in keyword:
     return update_day(keyword)
   elif "th" in keyword:
     return update_date(keyword)
   else:
     return False
+
+def update_workday():
+  today = datetime.datetime.now().strftime('%A')
+  if today not in ["Saturday", "Sunday"]:
+    return True
+  return False
 
 def update_day(days):
   day_list = days.split(",")
