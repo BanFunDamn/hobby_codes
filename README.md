@@ -15,15 +15,17 @@
 - This program is made to open only the manga site which will be or already updated on that day.
 - Adding site is super easy, you only have to add the {url, update_rule} dictionary data to the program!
   - Well, please be sure that I am only putting the naming rules which I need. (For now, Everyday, Workday, Monday to Sunday, and 5th or 10th dates are allowed)
+- This program doesn't work if you already done before the updation of manga site.
 
 ## BrowserBookmark
 - This program creates a file that contains the list of bookmark, but the words got encrypted (in very easy way) so other people can't see what page you got saved.
 - Don't you sometimes wanna hide even the name of bookmarks from others?<br>This is to save but hide those bookmarks! (Don't feel whenever be safe! Others can easily see when you opened the page in brower! <- Nobody should misunderstand this but I just wanted to make sure)
 
-## CheckComicUpdate
+## CheckNicoNicoUpdate
 - This program checkes the updates of niconico manga web site.
 - It collects only the manga whose episode has been updated today, and it put all links into html.
-- Finally this automatically opens Google Chrome to show the created html file, so make sure that Google Chrome has been installed or change the application.
+- Finally this automatically opens Brave Browser to show the created html file, so make sure that Google Chrome has been installed or change the application.
+- This program doesn't work if you already done before the updation of manga site.
 
 ## PasswordMaker
 - This program will automatically create an password.

@@ -3,8 +3,7 @@
 import adjust_html
 import datetime, os
 
-def get_date():
-  tmp_date = datetime.datetime.now()
+def get_date(tmp_date):
   month = str(tmp_date.month)
   if len(month) == 1:
     month = "0" + month
@@ -145,21 +144,53 @@ def create_database_html(dic_of_url, file_name):
     for line in sentence:
       wf.write(line + "\n")
 
+def main(log_name):
+  os.system("touch \"" + log_name + "\"")
+  contents = []
+  with open("log") as rf:
+    contents = rf.readlines()
+  content = ""
+  index = -1
+  for i in range(len(contents)):
+    if "NicoNico: " in contents[i]:
+      content = contents[i].replace("NicoNico: ", "")
+      index = i
+    if contents[i][-1] != "\n":
+      contents[i] += "\n"
+  if content == "":
+    content = "1111-11-11 11:11:11.111111\n"
+  last_check = datetime.datetime.strptime(content, '%Y-%m-%d %H:%M:%S.%f\n')
+  tmp_date = datetime.datetime.now()
+  if tmp_date.time() < datetime.time(12, 0, 0):
+    tmp_date = tmp_date - datetime.timedelta(1)
+  if last_check.time() < datetime.time(12, 0, 0):
+    last_check = last_check - datetime.timedelta(1)
+  if tmp_date.date() > last_check.date():
+    today = get_date(tmp_date)
+    while(True):
+      link_list = get_updated_pages(url_head + url_body, today)
+      if link_list != {}:
+        break
+    for key in link_list.keys():
+      link_list[key] = url_head + link_list[key]
+    check_list = []
+    full_comic_list = {}
+    for key in link_list.keys():
+      comic_list = get_updated_comics(link_list[key], today)
+      for ck in comic_list.keys():
+        if ck not in check_list:
+          full_comic_list.update({ck: url_head + comic_list[ck]})
+          check_list += [ck]
+    file_name = "test/data.html"
+    create_database_html(full_comic_list, file_name)
+    os.system("open -a \"Brave Browser\" " + file_name)
+  if index != -1:
+    contents[index] = "NicoNico: " + str(datetime.datetime.now()) + "\n"
+  else:
+    contents += ["NicoNico: " + str(datetime.datetime.now()) + "\n"]
+  with open("log", mode="w") as wf:
+    for i in range(len(contents)):
+      wf.write(contents[i])
+
 if __name__ == "__main__":
-  while(True):
-    link_list = get_updated_pages(url_head + url_body, get_date())
-    if link_list != {}:
-      break
-  for key in link_list.keys():
-    link_list[key] = url_head + link_list[key]
-  check_list = []
-  full_comic_list = {}
-  for key in link_list.keys():
-    comic_list = get_updated_comics(link_list[key], get_date())
-    for ck in comic_list.keys():
-      if ck not in check_list:
-        full_comic_list.update({ck: url_head + comic_list[ck]})
-        check_list += [ck]
-  file_name = "test/data.html"
-  create_database_html(full_comic_list, file_name)
-  os.system("open -a Google\ Chrome " + file_name)
+  main("log")
