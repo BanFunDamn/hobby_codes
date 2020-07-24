@@ -9,3 +9,6 @@ test/*
 # should be removed
 __pycache__
 .DS_Store
+
+# still working
+tmp_products
