@@ -73,6 +73,10 @@ def main(url, filename):
   bs4Obj = bs4.BeautifulSoup(get_url_info.text, "lxml")
   webContent = str(bs4Obj)
   
+  # rf = open("test.html")
+  # webContent = rf.read()
+  # rf.close()
+
   i = 0
   flag = False
   for wc in webContent.split("\n"):

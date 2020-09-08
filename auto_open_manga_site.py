@@ -9,7 +9,7 @@ site_list = {# URL in key, moment in value
              "https://futabanet.jp/list/monster/serial":"Workday_12:00",
              "https://www.ganganonline.com/contents/":"Monday,Thursday_12:00",
              "https://www.comic-earthstar.jp/":"Thursday_18:00",
-             "http://hobbyjapan.co.jp/comic/series/":"Friday_15:00",
+             "http://hobbyjapan.co.jp/comic/series/":"Friday_16:00",
              "https://comic-gardo.com/":"Friday_12:00",
              "http://storia.takeshobo.co.jp/":"Friday_12:00",
              "https://gammaplus.takeshobo.co.jp/index.html":"Friday_12:00",
