@@ -17,7 +17,8 @@ site_list = {# URL in key, moment in value
              "https://webcomicgamma.takeshobo.co.jp/":"10th_12:00",
              "https://tonarinoyj.jp/episode/13932016480028985383":"Everyday_0:00",
              "https://shonenjumpplus.com/":"Everyday_0:00",
-             "https://comicpash.jp/":"Workday_0:00",
+             "https://pash-up.jp/comic":"Workday_0:00",
+             "https://pocket.shonenmagazine.com/":"Everyday_0:00",
              }
 
 app = "Brave Browser"
