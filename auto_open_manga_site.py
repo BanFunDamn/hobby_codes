@@ -19,6 +19,7 @@ site_list = {# URL in key, moment in value
              "https://shonenjumpplus.com/":"Everyday_0:00",
              "https://pash-up.jp/comic":"Workday_0:00",
              "https://pocket.shonenmagazine.com/":"Everyday_0:00",
+             "https://www.comicbunch.com/":"Friday_0:00",
              }
 
 app = "Brave Browser"
