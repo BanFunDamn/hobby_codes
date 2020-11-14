@@ -86,12 +86,19 @@ def get_updated_pages(url, date):
   os.remove("test/tmp.html")
   return updated_page_list
 
-def get_updated_comics(url, date):
+def get_updated_comics(url, date, database):
   adjust_html.main(url, "test/tmp.html")
   content = []
   with open("test/tmp.html") as rf:
     content = rf.read().split("\n")
   updated_comic_list = {}
+#  database_key = []
+#  with open(database) as rf:
+#    lines = rf.read().split("\n")
+#    for i in range(len(lines)):
+#      if i > 6 and i < len(lines) - 2:
+#        key = lines[i].split(">")[1].split("<")[0]
+#        database_key += [key]
   for i in range(len(content)):
     tmp_text = adjust_html.clean_spaces(content[i])
     if len(tmp_text) > 5:
@@ -122,6 +129,8 @@ def get_updated_comics(url, date):
           continue
         full_link = adjust_html.clean_spaces(content[tmp_index])
         link = parse_href_tag(full_link)
+#        if name not in database_key:
+#          updated_comic_list[name] = link
         updated_comic_list[name] = link
   os.remove("test/tmp.html")
   return updated_comic_list
@@ -166,6 +175,7 @@ def main(log_name):
   if last_check.time() < datetime.time(12, 0, 0):
     last_check = last_check - datetime.timedelta(1)
   if tmp_date.date() > last_check.date():
+#  if tmp_date.date() >= last_check.date():
     today = get_date(tmp_date)
     while(True):
       link_list = get_updated_pages(url_head + url_body, today)
@@ -175,13 +185,17 @@ def main(log_name):
       link_list[key] = url_head + link_list[key]
     check_list = []
     full_comic_list = {}
+    file_name = "test/data.html"
     for key in link_list.keys():
-      comic_list = get_updated_comics(link_list[key], today)
+      comic_list = get_updated_comics(link_list[key], today, file_name)
+      while(True):
+        if comic_list != {}:
+          break
+        comic_list = get_updated_comics(link_list[key], today, file_name)
       for ck in comic_list.keys():
         if ck not in check_list:
           full_comic_list.update({ck: url_head + comic_list[ck]})
           check_list += [ck]
-    file_name = "test/data.html"
     create_database_html(full_comic_list, file_name)
     os.system("open -a \"Brave Browser\" " + file_name)
   if index != -1:
