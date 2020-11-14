@@ -95,9 +95,12 @@ def get_updated_comics(url, date, database):
 #  database_key = []
 #  with open(database) as rf:
 #    lines = rf.read().split("\n")
-#    for i in range(len(lines)):
-#      if i > 6 and i < len(lines) - 2:
-#        key = lines[i].split(">")[1].split("<")[0]
+#    for line in rf.read().split("\n"):
+#      if "href" in line[3:7]:
+#        key = line.split(">")[1].split("<")[0]
+#        database_key += [key]
+#      elif "<!--" in line[:4]:
+#        key = line.replace("<!-- ", "").replace(" -->", "").split(", date:")[0]
 #        database_key += [key]
   for i in range(len(content)):
     tmp_text = adjust_html.clean_spaces(content[i])
@@ -135,7 +138,7 @@ def get_updated_comics(url, date, database):
   os.remove("test/tmp.html")
   return updated_comic_list
 
-def create_database_html(dic_of_url, file_name):
+def create_database_html(dic_of_url, file_name, date):
   sentence = ["<!DOCTYPE html>",
               "<html lang=\"ja\">",
               "<head>",
@@ -149,6 +152,19 @@ def create_database_html(dic_of_url, file_name):
   for key in dic_of_url.keys():
     tmp = "<a href=\"" + dic_of_url[key] + "\">" + key + "</a><br>"
     sentence = sentence[:-2] + [tmp] + sentence[-2:]
+#  old_database = {}
+#  with open(file_name) as rf:
+#    for line in rf.read().split("\n"):
+#      if "href" in line[3:7]:
+#        key = line.split(">")[1].split("<")[0]
+#        old_database.update({key: today})
+#      elif "<!--" in line[:4]:
+#        keys = line.replace("<!-- ", "").replace(" -->", "").split(", date:")
+#        old_database.update({keys[0]: keys[1]})
+#  for key in old_database.keys:
+#    if old_database[key] == today:
+#      tmp = "<!-- " + key + ", date:" + old_database[key] + " -->"
+#      sentence = sentence[:-2] + [tmp] + sentence[-2:]
   with open(file_name, mode="w") as wf:
     for line in sentence:
       wf.write(line + "\n")
@@ -196,7 +212,7 @@ def main(log_name):
         if ck not in check_list:
           full_comic_list.update({ck: url_head + comic_list[ck]})
           check_list += [ck]
-    create_database_html(full_comic_list, file_name)
+    create_database_html(full_comic_list, file_name, today)
     os.system("open -a \"Brave Browser\" " + file_name)
   if index != -1:
     contents[index] = "NicoNico: " + str(datetime.datetime.now()) + "\n"
