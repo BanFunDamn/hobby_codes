@@ -59,7 +59,11 @@ def get_updated_pages(url, date):
   with open("test/tmp.html") as rf:
     content = rf.read().split("\n")
   updated_page_list = {}
+  flag = True
   for i in range(len(content)):
+    if "Forbidden" in content[i] and "403" in content[i]:
+      flag = False
+      break
     tmp_text = adjust_html.clean_spaces(content[i])
     if len(tmp_text) > 5:
       if date == tmp_text[:5]:
@@ -84,7 +88,7 @@ def get_updated_pages(url, date):
         link = parse_href_tag(full_link)
         updated_page_list[name] = link
   os.remove("test/tmp.html")
-  return updated_page_list
+  return updated_page_list, flag
 
 def get_updated_comics(url, date, database):
   adjust_html.main(url, "test/tmp.html")
@@ -92,17 +96,22 @@ def get_updated_comics(url, date, database):
   with open("test/tmp.html") as rf:
     content = rf.read().split("\n")
   updated_comic_list = {}
-#  database_key = []
-#  with open(database) as rf:
-#    lines = rf.read().split("\n")
-#    for line in rf.read().split("\n"):
-#      if "href" in line[3:7]:
-#        key = line.split(">")[1].split("<")[0]
-#        database_key += [key]
-#      elif "<!--" in line[:4]:
-#        key = line.replace("<!-- ", "").replace(" -->", "").split(", date:")[0]
-#        database_key += [key]
+
+  database_key = []
+  with open(database) as rf:
+    for line in rf.read().split("\n"):
+      if "href" in line[:7]:
+        key = line.split(">")[1].split("<")[0]
+        database_key += [key]
+      elif "<!--" in line[:4]:
+        key = line.replace("<!-- ", "").replace(" -->", "").split(", date:")[0]
+        database_key += [key]
+
+  flag = True
   for i in range(len(content)):
+    if "Forbidden" in content[i] and "403" in content[i]:
+      flag = False
+      break
     tmp_text = adjust_html.clean_spaces(content[i])
     if len(tmp_text) > 5:
       if date == tmp_text[:5]:
@@ -132,11 +141,13 @@ def get_updated_comics(url, date, database):
           continue
         full_link = adjust_html.clean_spaces(content[tmp_index])
         link = parse_href_tag(full_link)
-#        if name not in database_key:
-#          updated_comic_list[name] = link
-        updated_comic_list[name] = link
+
+        if name not in database_key:
+          updated_comic_list[name] = link
+
+#        updated_comic_list[name] = link
   os.remove("test/tmp.html")
-  return updated_comic_list
+  return updated_comic_list, flag
 
 def create_database_html(dic_of_url, file_name, date):
   sentence = ["<!DOCTYPE html>",
@@ -149,22 +160,26 @@ def create_database_html(dic_of_url, file_name, date):
               "</body>",
               "</html>"
               ]
+  count = 0
   for key in dic_of_url.keys():
     tmp = "<a href=\"" + dic_of_url[key] + "\">" + key + "</a><br>"
     sentence = sentence[:-2] + [tmp] + sentence[-2:]
-#  old_database = {}
-#  with open(file_name) as rf:
-#    for line in rf.read().split("\n"):
-#      if "href" in line[3:7]:
-#        key = line.split(">")[1].split("<")[0]
-#        old_database.update({key: today})
-#      elif "<!--" in line[:4]:
-#        keys = line.replace("<!-- ", "").replace(" -->", "").split(", date:")
-#        old_database.update({keys[0]: keys[1]})
-#  for key in old_database.keys:
-#    if old_database[key] == today:
-#      tmp = "<!-- " + key + ", date:" + old_database[key] + " -->"
-#      sentence = sentence[:-2] + [tmp] + sentence[-2:]
+    count += 1
+
+  old_database = {}
+  with open(file_name) as rf:
+    for line in rf.read().split("\n"):
+      if "href" in line[3:7]:
+        key = line.split(">")[1].split("<")[0]
+        old_database.update({key: date})
+      elif "<!--" in line[:4]:
+        keys = line.replace("<!-- ", "").replace(" -->", "").split(", date:")
+        old_database.update({keys[0]: keys[1]})
+  for key in old_database.keys():
+    if old_database[key] == date or count == 0:
+      tmp = "<!-- " + key + ", date:" + old_database[key] + " -->"
+      sentence = sentence[:-2] + [tmp] + sentence[-2:]
+
   with open(file_name, mode="w") as wf:
     for line in sentence:
       wf.write(line + "\n")
@@ -190,24 +205,25 @@ def main(log_name):
     tmp_date = tmp_date - datetime.timedelta(1)
   if last_check.time() < datetime.time(12, 0, 0):
     last_check = last_check - datetime.timedelta(1)
-  if tmp_date.date() > last_check.date():
-#  if tmp_date.date() >= last_check.date():
+#  if tmp_date.date() > last_check.date():
+  if tmp_date.date() >= last_check.date():
     today = get_date(tmp_date)
     while(True):
-      link_list = get_updated_pages(url_head + url_body, today)
-      if link_list != {}:
+      link_list, collect_flag = get_updated_pages(url_head + url_body, today)
+      if collect_flag:
         break
     for key in link_list.keys():
       link_list[key] = url_head + link_list[key]
     check_list = []
     full_comic_list = {}
-    file_name = "test/data.html"
+    file_name = "test/niconico.html"
+    os.system("touch \"" + file_name + "\"")
     for key in link_list.keys():
-      comic_list = get_updated_comics(link_list[key], today, file_name)
+      comic_list, collect_flag = get_updated_comics(link_list[key], today, file_name)
       while(True):
-        if comic_list != {}:
+        if collect_flag:
           break
-        comic_list = get_updated_comics(link_list[key], today, file_name)
+        comic_list, collect_flag = get_updated_comics(link_list[key], today, file_name)
       for ck in comic_list.keys():
         if ck not in check_list:
           full_comic_list.update({ck: url_head + comic_list[ck]})
