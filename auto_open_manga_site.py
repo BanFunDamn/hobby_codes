@@ -20,7 +20,7 @@ site_list = {# URL in key, moment in value
              "https://pash-up.jp/comic":"Workday_0:00",
              "https://pocket.shonenmagazine.com/":"Everyday_0:00",
              "https://www.comicbunch.com/":"Friday_0:00",
-             "https://konomanga.jp/original":"Everyday_0:00",
+             "https://konomanga.jp/original":"Everyday_21:00",
              "https://www.comic-valkyrie.com/#lineup":"Tuesday,Friday_0:00",
              }
 
