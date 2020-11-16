@@ -1,4 +1,5 @@
 #! /usr/bin/env python3
+# pip3 install requests beautifulsoup4 lxml
 
 import adjust_html
 import datetime, os
