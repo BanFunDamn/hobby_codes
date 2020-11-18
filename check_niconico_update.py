@@ -163,7 +163,7 @@ def create_database_html(dic_of_url, file_name, date):
               ]
   count = 0
   for key in dic_of_url.keys():
-    tmp = "<a href=\"" + dic_of_url[key] + "\">" + key + "</a><br>"
+    tmp = "<a href=\"" + dic_of_url[key] + "\">" + key + "</a><!-- " + date + " --><br>"
     sentence = sentence[:-2] + [tmp] + sentence[-2:]
     count += 1
 
@@ -202,13 +202,27 @@ def main(log_name):
     content = "1111-11-11 11:11:11.111111\n"
   last_check = datetime.datetime.strptime(content, '%Y-%m-%d %H:%M:%S.%f\n')
   tmp_date = datetime.datetime.now()
-  if tmp_date.time() < datetime.time(12, 0, 0):
-    tmp_date = tmp_date - datetime.timedelta(1)
-  if last_check.time() < datetime.time(12, 0, 0):
-    last_check = last_check - datetime.timedelta(1)
+#  if tmp_date.time() < datetime.time(12, 0, 0):
+#    tmp_date = tmp_date - datetime.timedelta(1)
+#  if last_check.time() < datetime.time(12, 0, 0):
+#    last_check = last_check - datetime.timedelta(1)
 #  if tmp_date.date() > last_check.date():
   if tmp_date.date() >= last_check.date():
     today = get_date(tmp_date)
+    lastdate_complete_flag = False
+    file_name = "test/niconico.html"
+    with open(file_name) as rf:
+      for line in rf.read().split("\n"):
+        if "<!--" in line[:4]:
+          date = line.replace("<!-- ", "").replace(" -->","").split(", date:")[1]
+          if date == today:
+            lastdate_complete_flag = True
+            break
+        elif "href" in line[3:7]:
+          date = line.split("<!-- ")[1].split(" -->")[0]
+          if date == today:
+            lastdate_complete_flag = True
+            break
     while(True):
       link_list, collect_flag = get_updated_pages(url_head + url_body, today)
       if collect_flag:
@@ -217,7 +231,6 @@ def main(log_name):
       link_list[key] = url_head + link_list[key]
     check_list = []
     full_comic_list = {}
-    file_name = "test/niconico.html"
     os.system("touch \"" + file_name + "\"")
     for key in link_list.keys():
       comic_list, collect_flag = get_updated_comics(link_list[key], today, file_name)
@@ -229,6 +242,30 @@ def main(log_name):
         if ck not in check_list:
           full_comic_list.update({ck: url_head + comic_list[ck]})
           check_list += [ck]
+    if not lastdate_complete_flag:
+      tmp_date = tmp_date - datetime.timedelta(1)
+      yesterday = get_date(tmp_date)
+      while(True):
+        lastdate_link_list, collect_flag = get_updated_pages(url_head + url_body, yesterday)
+        if collect_flag:
+          break
+      for key in lastdate_link_list.keys():
+        lastdate_link_list[key] = url_head + lastdate_link_list[key]
+      lastdate_link_list.update(link_list)
+      lastdate_check_list = []
+      lastdate_full_comic_list = {}
+      os.system("touch \"" + file_name + "\"")
+      for key in lastdate_link_list.keys():
+        lastdate_comic_list, collect_flag = get_updated_comics(lastdate_link_list[key], yesterday, file_name)
+        while(True):
+          if collect_flag:
+            break
+          lastdate_comic_list, collect_flag = get_updated_comics(lastdate_link_list[key], yesterday, file_name)
+        for ck in lastdate_comic_list.keys():
+          if ck not in lastdate_check_list:
+            lastdate_full_comic_list.update({ck: url_head + lastdate_comic_list[ck]})
+            lastdate_check_list += [ck]
+      full_comic_list.update(lastdate_full_comic_list)
     create_database_html(full_comic_list, file_name, today)
     os.system("open -a \"Brave Browser\" " + file_name)
   if index != -1:
