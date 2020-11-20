@@ -22,6 +22,7 @@ site_list = {# URL in key, moment in value
              "https://www.comicbunch.com/":"Friday_0:00",
              "https://konomanga.jp/original":"Everyday_21:00",
              "https://www.comic-valkyrie.com/#lineup":"Tuesday,Friday_12:00",
+             "https://online.ichijinsha.co.jp/zerosum":"Friday_12:00",
              }
 
 app = "Brave Browser"
