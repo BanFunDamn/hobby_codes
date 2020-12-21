@@ -25,7 +25,7 @@
 - This program checkes the updates of niconico manga web site.
 - It collects only the manga whose episode has been updated today, and it put all links into html.
 - Finally this automatically opens Brave Browser to show the created html file, so make sure that Google Chrome has been installed or change the application.
-- This program doesn't work if you already done before the updation of manga site.
+- This program checkes the updates from niconico.html so DO NOT delete unless you want to reset which title you've already checked.
 
 ## PasswordMaker
 - This program will automatically create an password.
