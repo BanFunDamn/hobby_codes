@@ -3,6 +3,13 @@
 
 import adjust_html
 import datetime, os
+from argparse import ArgumentParser
+
+parser = ArgumentParser()
+parser.add_argument("-l", "--log", default="log", help="name of log file")
+parser.add_argument("-o", "--output", default="test/niconico.html", help="name of database file")
+parser.add_argument("-b", "--browser", default="Brave Browser", help="name of browser app to open")
+args = parser.parse_args()
 
 def get_date(tmp_date):
   month = str(tmp_date.month)
@@ -55,9 +62,10 @@ def parse_href_tag(text):
   return tmp
 
 def get_updated_pages(url, date):
-  adjust_html.main(url, "test/tmp.html")
+  tmp_file = "test/tmp.html"
+  adjust_html.main(url, tmp_file)
   content = []
-  with open("test/tmp.html") as rf:
+  with open(tmp_file) as rf:
     content = rf.read().split("\n")
   updated_page_list = {}
   flag = True
@@ -88,13 +96,14 @@ def get_updated_pages(url, date):
         full_link = adjust_html.clean_spaces(content[tmp_index])
         link = parse_href_tag(full_link)
         updated_page_list[name] = link
-  os.remove("test/tmp.html")
+  os.remove(tmp_file)
   return updated_page_list, flag
 
 def get_updated_comics(url, date, database):
-  adjust_html.main(url, "test/tmp.html")
+  tmp_file = "test/tmp.html"
+  adjust_html.main(url, tmp_file)
   content = []
-  with open("test/tmp.html") as rf:
+  with open(tmp_file) as rf:
     content = rf.read().split("\n")
   updated_comic_list = {}
 
@@ -147,7 +156,7 @@ def get_updated_comics(url, date, database):
           updated_comic_list[name] = link
 
 #        updated_comic_list[name] = link
-  os.remove("test/tmp.html")
+  os.remove(tmp_file)
   return updated_comic_list, flag
 
 def create_database_html(dic_of_url, file_name, date):
@@ -185,10 +194,11 @@ def create_database_html(dic_of_url, file_name, date):
     for line in sentence:
       wf.write(line + "\n")
 
-def main(log_name):
-  os.system("touch \"" + log_name + "\"")
+def main(log, file_name, browser):
+  os.system("touch \"" + log + "\"")
+  os.system("touch \"" + file_name + "\"")
   contents = []
-  with open("log") as rf:
+  with open(log) as rf:
     contents = rf.readlines()
   content = ""
   index = -1
@@ -210,7 +220,6 @@ def main(log_name):
   if tmp_date.date() >= last_check.date():
     today = get_date(tmp_date)
     lastdate_complete_flag = False
-    file_name = "test/niconico.html"
     with open(file_name) as rf:
       for line in rf.read().split("\n"):
         if "<!--" in line[:4]:
@@ -267,14 +276,14 @@ def main(log_name):
             lastdate_check_list += [ck]
       full_comic_list.update(lastdate_full_comic_list)
     create_database_html(full_comic_list, file_name, today)
-    os.system("open -a \"Brave Browser\" " + file_name)
+    os.system("open -a \"" + browser + "\" " + file_name)
   if index != -1:
     contents[index] = "NicoNico: " + str(datetime.datetime.now()) + "\n"
   else:
     contents += ["NicoNico: " + str(datetime.datetime.now()) + "\n"]
-  with open("log", mode="w") as wf:
+  with open(log, mode="w") as wf:
     for i in range(len(contents)):
       wf.write(contents[i])
 
 if __name__ == "__main__":
-  main("log")
+  main(args.log, args.output, args.browser)

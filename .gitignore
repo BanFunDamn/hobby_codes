@@ -5,7 +5,6 @@ databank
 
 # outputs of test dir
 test/*
-log
 
 # should be removed
 __pycache__

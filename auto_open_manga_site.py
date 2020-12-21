@@ -1,4 +1,10 @@
 import datetime, os
+from argparse import ArgumentParser
+
+parser = ArgumentParser()
+parser.add_argument("-l", "--log", default = "log", help = "name of log file")
+parser.add_argument("-b", "--browser", default = "Brave Browser", help = "name of opening app")
+args = parser.parse_args()
 
 site_list = {# URL in key, moment in value
              # write several moments dividing by comma
@@ -24,8 +30,6 @@ site_list = {# URL in key, moment in value
              "https://www.comic-valkyrie.com/#lineup":"Tuesday,Friday_12:00",
              "https://online.ichijinsha.co.jp/zerosum":"Friday_12:00",
              }
-
-app = "Brave Browser"
 
 def update_today(keyword, last): # check the keyword type
   last_check = last
@@ -102,4 +106,4 @@ def main(site_list, app, log_name):
       wf.write(contents[i])
 
 if __name__ == "__main__":
-  main(site_list, app, "log")
+  main(site_list, args.browser, args.log)
